@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".SplashActivity">
+
+    <!-- Yellow rounded card container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/yellowCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+
+
+
+        app:cardBackgroundColor="@color/splash_yellow"
+
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1">
+
+        <!-- Boy with magnifier image -->
+        <ImageView
+            android:id="@+id/boyImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/boy_with_magnifier"
+            android:padding="60dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/boy_with_magnifier_in_hand" />
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Purple accent curved line at bottom of card -->
+    <View
+        android:id="@+id/accentLine"
+        android:layout_width="0dp"
+        android:layout_height="12dp"
+        android:background="@color/blue_purple"
+        app:layout_constraintBottom_toBottomOf="@+id/yellowCard"
+        app:layout_constraintEnd_toEndOf="@+id/yellowCard"
+        app:layout_constraintStart_toStartOf="@+id/yellowCard" />
+
+    <!-- Bottom white section container -->
+    <LinearLayout
+        android:id="@+id/bottomSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="40dp"
+        android:paddingBottom="60dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Foundit title -->
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/app_name_display"
+            android:textColor="@color/black"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:letterSpacing="-0.02" />
+
+        <!-- Tagline -->
+        <TextView
+            android:id="@+id/taglineText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/tagline"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
