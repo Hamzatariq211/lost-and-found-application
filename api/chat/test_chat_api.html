@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat API Tester - Lost & Found</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { color: #9C4A9D; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #9C4A9D; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #7a3a7d; }
+        .result { margin-top: 10px; padding: 10px; background: #f9f9f9; border-left: 3px solid #9C4A9D; }
+        .success { border-left-color: green; }
+        .error { border-left-color: red; }
+        input, select { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Chat API Tester</h1>
+
+        <div class="test-section">
+            <h3>1. Test Database Connection</h3>
+            <button onclick="testConnection()">Test Connection</button>
+            <div id="connectionResult" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Check Tables Exist</h3>
+            <button onclick="checkTables()">Check Tables</button>
+            <div id="tablesResult" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>3. Test Create Chat Room</h3>
+            <label>Post ID:</label>
+            <input type="number" id="postId" value="1" />
+            <label>Sender ID:</label>
+            <input type="number" id="senderId" value="1" />
+            <label>Receiver ID:</label>
+            <input type="number" id="receiverId" value="2" />
+            <button onclick="testCreateRoom()">Create Room</button>
+            <div id="createRoomResult" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>4. Test Get Chat Rooms</h3>
+            <label>User ID:</label>
+            <input type="number" id="getUserId" value="1" />
+            <button onclick="testGetRooms()">Get Rooms</button>
+            <div id="getRoomsResult" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. Test Send Message</h3>
+            <label>Room ID:</label>
+            <input type="number" id="roomId" value="1" />
+            <label>Sender ID:</label>
+            <input type="number" id="msgSenderId" value="1" />
+            <label>Message:</label>
+            <input type="text" id="messageText" value="Test message" />
+            <button onclick="testSendMessage()">Send Message</button>
+            <div id="sendMessageResult" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>6. Test Get Messages</h3>
+            <label>Room ID:</label>
+            <input type="number" id="getRoomId" value="1" />
+            <button onclick="testGetMessages()">Get Messages</button>
+            <div id="getMessagesResult" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost/lost_and_found_api/chat/chat_api.php';
+
+        function showResult(elementId, message, isSuccess) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<pre>${message}</pre>`;
+            element.className = 'result ' + (isSuccess ? 'success' : 'error');
+            element.style.display = 'block';
+        }
+
+        function testConnection() {
+            fetch('http://localhost/lost_and_found_api/posts/get_posts.php')
+                .then(response => response.json())
+                .then(data => {
+                    showResult('connectionResult',
+                        '✅ Database connection successful!\n' + JSON.stringify(data, null, 2),
+                        true);
+                })
+                .catch(error => {
+                    showResult('connectionResult',
+                        '❌ Connection failed: ' + error.message,
+                        false);
+                });
+        }
+
+        function checkTables() {
+            fetch('check_tables.php')
+                .then(response => response.json())
+                .then(data => {
+                    showResult('tablesResult',
+                        JSON.stringify(data, null, 2),
+                        data.success);
+                })
+                .catch(error => {
+                    showResult('tablesResult',
+                        '❌ Error: ' + error.message + '\n\nNote: You need to create check_tables.php',
+                        false);
+                });
+        }
+
+        function testCreateRoom() {
+            const formData = new FormData();
+            formData.append('action', 'create_room');
+            formData.append('post_id', document.getElementById('postId').value);
+            formData.append('sender_id', document.getElementById('senderId').value);
+            formData.append('receiver_id', document.getElementById('receiverId').value);
+
+            fetch(API_BASE, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                showResult('createRoomResult',
+                    JSON.stringify(data, null, 2),
+                    data.success);
+            })
+            .catch(error => {
+                showResult('createRoomResult',
+                    '❌ Error: ' + error.message,
+                    false);
+            });
+        }
+
+        function testGetRooms() {
+            const userId = document.getElementById('getUserId').value;
+
+            fetch(`${API_BASE}?action=get_rooms&user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    showResult('getRoomsResult',
+                        JSON.stringify(data, null, 2),
+                        data.success);
+                })
+                .catch(error => {
+                    showResult('getRoomsResult',
+                        '❌ Error: ' + error.message,
+                        false);
+                });
+        }
+
+        function testSendMessage() {
+            const formData = new FormData();
+            formData.append('action', 'send_message');
+            formData.append('room_id', document.getElementById('roomId').value);
+            formData.append('sender_id', document.getElementById('msgSenderId').value);
+            formData.append('message_text', document.getElementById('messageText').value);
+
+            fetch(API_BASE, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                showResult('sendMessageResult',
+                    JSON.stringify(data, null, 2),
+                    data.success);
+            })
+            .catch(error => {
+                showResult('sendMessageResult',
+                    '❌ Error: ' + error.message,
+                    false);
+            });
+        }
+
+        function testGetMessages() {
+            const roomId = document.getElementById('getRoomId').value;
+
+            fetch(`${API_BASE}?action=get_messages&room_id=${roomId}`)
+                .then(response => response.json())
+                .then(data => {
+                    showResult('getMessagesResult',
+                        JSON.stringify(data, null, 2),
+                        data.success);
+                })
+                .catch(error => {
+                    showResult('getMessagesResult',
+                        '❌ Error: ' + error.message,
+                        false);
+                });
+        }
+    </script>
+</body>
+</html>
+

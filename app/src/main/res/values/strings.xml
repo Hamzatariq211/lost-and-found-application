@@ -37,6 +37,9 @@
     <string name="home_icon">Home</string>
     <string name="add_icon">Add</string>
     <string name="profile_icon">Profile</string>
+    <string name="messages">Messages</string>
+    <string name="my_posts">My Posts</string>
+    <string name="profile">Profile</string>
     <string name="product_image">Product Image</string>
     <string name="location_label">Location:</string>
     <string name="description_label">Description</string>

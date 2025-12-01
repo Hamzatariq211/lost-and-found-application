@@ -1,0 +1,17 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Allow CORS
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# Prevent directory listing
+Options -Indexes
+
+# Set max upload size (adjust as needed)
+php_value upload_max_filesize 10M
+php_value post_max_size 10M

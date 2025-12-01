@@ -239,9 +239,24 @@
                 android:backgroundTint="@color/button_purple"
                 app:cornerRadius="12dp" />
 
+            <!-- Logout Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:text="Logout"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:backgroundTint="@android:color/holo_red_dark"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_lock_power_off"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white" />
+
         </LinearLayout>
 
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

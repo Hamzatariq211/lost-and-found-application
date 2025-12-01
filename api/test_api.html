@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found API Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 { color: #6C63FF; }
+        h2 { color: #333; border-bottom: 2px solid #6C63FF; padding-bottom: 10px; }
+        button {
+            background: #6C63FF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #5548CC; }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .response {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success { border-left: 4px solid #4CAF50; }
+        .error { border-left: 4px solid #f44336; }
+        label { font-weight: bold; display: block; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Lost & Found API Tester</h1>
+    
+    <div class="container">
+        <h2>1. Sign Up</h2>
+        <label>Full Name:</label>
+        <input type="text" id="signup_fullname" value="Test User">
+        <label>Username:</label>
+        <input type="text" id="signup_username" value="testuser">
+        <label>Email:</label>
+        <input type="email" id="signup_email" value="test@example.com">
+        <label>Mobile:</label>
+        <input type="text" id="signup_mobile" value="+1234567890">
+        <label>Password:</label>
+        <input type="password" id="signup_password" value="password123">
+        <button onclick="testSignup()">Test Signup</button>
+        <div id="signup_response" class="response"></div>
+    </div>
+
+    <div class="container">
+        <h2>2. Login</h2>
+        <label>Username/Email:</label>
+        <input type="text" id="login_username" value="testuser">
+        <label>Password:</label>
+        <input type="password" id="login_password" value="password123">
+        <button onclick="testLogin()">Test Login</button>
+        <div id="login_response" class="response"></div>
+    </div>
+
+    <div class="container">
+        <h2>3. Get All Posts</h2>
+        <label>Item Type (optional):</label>
+        <select id="get_posts_type">
+            <option value="">All</option>
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+        </select>
+        <label>Search (optional):</label>
+        <input type="text" id="get_posts_search" placeholder="Search term">
+        <button onclick="testGetPosts()">Get Posts</button>
+        <div id="get_posts_response" class="response"></div>
+    </div>
+
+    <div class="container">
+        <h2>4. Get Post by ID</h2>
+        <label>Post ID:</label>
+        <input type="number" id="get_post_id" value="1">
+        <button onclick="testGetPostById()">Get Post</button>
+        <div id="get_post_response" class="response"></div>
+    </div>
+
+    <div class="container">
+        <h2>5. Create Post (Login Required)</h2>
+        <label>Auth Token:</label>
+        <input type="text" id="create_token" placeholder="Paste token from login">
+        <label>Item Name:</label>
+        <input type="text" id="create_name" value="Test Item">
+        <label>Description:</label>
+        <textarea id="create_desc" rows="3">This is a test item description</textarea>
+        <label>Location:</label>
+        <input type="text" id="create_location" value="Test Location">
+        <label>Item Type:</label>
+        <select id="create_type">
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+        </select>
+        <button onclick="testCreatePost()">Create Post</button>
+        <div id="create_response" class="response"></div>
+    </div>
+
+    <div class="container">
+        <h2>6. Get Notifications (Login Required)</h2>
+        <label>Auth Token:</label>
+        <input type="text" id="notif_token" placeholder="Paste token from login">
+        <button onclick="testGetNotifications()">Get Notifications</button>
+        <div id="notif_response" class="response"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost/lost_and_found_api';
+
+        async function testSignup() {
+            const data = {
+                full_name: document.getElementById('signup_fullname').value,
+                username: document.getElementById('signup_username').value,
+                email: document.getElementById('signup_email').value,
+                mobile_number: document.getElementById('signup_mobile').value,
+                password: document.getElementById('signup_password').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/signup.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                displayResponse('signup_response', result, response.ok);
+                if (result.data && result.data.token) {
+                    document.getElementById('create_token').value = result.data.token;
+                    document.getElementById('notif_token').value = result.data.token;
+                }
+            } catch (error) {
+                displayResponse('signup_response', { error: error.message }, false);
+            }
+        }
+
+        async function testLogin() {
+            const data = {
+                username: document.getElementById('login_username').value,
+                password: document.getElementById('login_password').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/login.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                displayResponse('login_response', result, response.ok);
+                if (result.data && result.data.token) {
+                    document.getElementById('create_token').value = result.data.token;
+                    document.getElementById('notif_token').value = result.data.token;
+                }
+            } catch (error) {
+                displayResponse('login_response', { error: error.message }, false);
+            }
+        }
+
+        async function testGetPosts() {
+            const type = document.getElementById('get_posts_type').value;
+            const search = document.getElementById('get_posts_search').value;
+            let url = `${API_BASE}/posts/get_posts.php?`;
+            if (type) url += `item_type=${type}&`;
+            if (search) url += `search=${search}`;
+
+            try {
+                const response = await fetch(url);
+                const result = await response.json();
+                displayResponse('get_posts_response', result, response.ok);
+            } catch (error) {
+                displayResponse('get_posts_response', { error: error.message }, false);
+            }
+        }
+
+        async function testGetPostById() {
+            const postId = document.getElementById('get_post_id').value;
+            try {
+                const response = await fetch(`${API_BASE}/posts/get_post_by_id.php?post_id=${postId}`);
+                const result = await response.json();
+                displayResponse('get_post_response', result, response.ok);
+            } catch (error) {
+                displayResponse('get_post_response', { error: error.message }, false);
+            }
+        }
+
+        async function testCreatePost() {
+            const token = document.getElementById('create_token').value;
+            if (!token) {
+                alert('Please login first to get authentication token');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('item_name', document.getElementById('create_name').value);
+            formData.append('item_description', document.getElementById('create_desc').value);
+            formData.append('location', document.getElementById('create_location').value);
+            formData.append('item_type', document.getElementById('create_type').value);
+
+            try {
+                const response = await fetch(`${API_BASE}/posts/create_post.php`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                const result = await response.json();
+                displayResponse('create_response', result, response.ok);
+            } catch (error) {
+                displayResponse('create_response', { error: error.message }, false);
+            }
+        }
+
+        async function testGetNotifications() {
+            const token = document.getElementById('notif_token').value;
+            if (!token) {
+                alert('Please login first to get authentication token');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/notifications/get_notifications.php`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+                displayResponse('notif_response', result, response.ok);
+            } catch (error) {
+                displayResponse('notif_response', { error: error.message }, false);
+            }
+        }
+
+        function displayResponse(elementId, data, success) {
+            const element = document.getElementById(elementId);
+            element.textContent = JSON.stringify(data, null, 2);
+            element.className = success ? 'response success' : 'response error';
+        }
+    </script>
+</body>
+</html>

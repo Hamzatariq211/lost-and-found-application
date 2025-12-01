@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/dark_card_purple"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Header Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Item Name -->
+            <TextView
+                android:id="@+id/itemName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Watch"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Match Score Badge -->
+            <TextView
+                android:id="@+id/matchScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Match: 80%"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:background="@drawable/notify_button_bg"
+                android:padding="6dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
+        </LinearLayout>
+
+        <!-- Item Type -->
+        <TextView
+            android:id="@+id/itemType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Type: FOUND"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:alpha="0.7" />
+
+        <!-- Item Description -->
+        <TextView
+            android:id="@+id/itemDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Silver watch with black leather strap"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:alpha="0.8" />
+
+        <!-- Item Location -->
+        <TextView
+            android:id="@+id/itemLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Location: Cafe"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:alpha="0.7" />
+
+        <!-- Item Status -->
+        <TextView
+            android:id="@+id/itemStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Active"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+

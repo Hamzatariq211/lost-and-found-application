@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "lost-found-api-collection",
+		"name": "Lost and Found API",
+		"description": "Complete API collection for Lost and Found mobile application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"full_name\": \"John Doe\",\n  \"username\": \"johndoe\",\n  \"email\": \"john@example.com\",\n  \"mobile_number\": \"+1234567890\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/auth/signup.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "auth", "signup.php"]
+						}
+					}
+				},
+				{
+					"name": "Login (Email/Username)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/auth/login.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "auth", "login.php"]
+						}
+					}
+				},
+				{
+					"name": "Login (Mobile Number)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mobile_number\": \"+1234567890\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/auth/login_mobile.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "auth", "login_mobile.php"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Get All Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/posts/get_posts.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "posts", "get_posts.php"]
+						}
+					}
+				},
+				{
+					"name": "Get Posts (Filtered by Type)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/posts/get_posts.php?item_type=found",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "posts", "get_posts.php"],
+							"query": [
+								{
+									"key": "item_type",
+									"value": "found"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Search Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/posts/get_posts.php?search=bottle",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "posts", "get_posts.php"],
+							"query": [
+								{
+									"key": "search",
+									"value": "bottle"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Post by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/posts/get_post_by_id.php?post_id=1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "posts", "get_post_by_id.php"],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Post (with Image)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer YOUR_TOKEN_HERE"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "item_name",
+									"value": "Water Bottle",
+									"type": "text"
+								},
+								{
+									"key": "item_description",
+									"value": "Blue water bottle found in cafeteria",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "C-110",
+									"type": "text"
+								},
+								{
+									"key": "item_type",
+									"value": "found",
+									"type": "text"
+								},
+								{
+									"key": "item_image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/posts/create_post.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "posts", "create_post.php"]
+						}
+					}
+				},
+				{
+					"name": "Sync Offline Posts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer YOUR_TOKEN_HERE"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"posts\": [\n    {\n      \"local_id\": \"local_1\",\n      \"item_name\": \"Notebook\",\n      \"item_description\": \"Blue notebook\",\n      \"location\": \"D-312\",\n      \"item_type\": \"found\"\n    },\n    {\n      \"local_id\": \"local_2\",\n      \"item_name\": \"Charger\",\n      \"item_description\": \"White phone charger\",\n      \"location\": \"Rawal-1\",\n      \"item_type\": \"found\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/posts/sync_posts.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "posts", "sync_posts.php"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer YOUR_TOKEN_HERE"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/notifications/get_notifications.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "notifications", "get_notifications.php"]
+						}
+					}
+				},
+				{
+					"name": "Create Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer YOUR_TOKEN_HERE"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": 1,\n  \"post_id\": 5,\n  \"notification_type\": \"match\",\n  \"title\": \"Item Match Found!\",\n  \"message\": \"A water bottle matching your search was found in C-110\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/notifications/create_notification.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "notifications", "create_notification.php"]
+						}
+					}
+				},
+				{
+					"name": "Mark as Read",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer YOUR_TOKEN_HERE"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notification_id\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/notifications/mark_as_read.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "notifications", "mark_as_read.php"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer YOUR_TOKEN_HERE"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/lost_and_found_api/user/get_profile.php",
+							"protocol": "http",
+							"host": ["localhost"],
+							"path": ["lost_and_found_api", "user", "get_profile.php"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
