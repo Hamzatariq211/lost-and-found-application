@@ -550,6 +550,7 @@ class MyPostsActivity : AppCompatActivity() {
             val itemStatus: TextView = view.findViewById(R.id.itemStatus)
             val createdAt: TextView = view.findViewById(R.id.createdAt)
             val matchingPostsBtn: MaterialButton = view.findViewById(R.id.matchingPostsBtn)
+            val speakerBtn: android.widget.ImageButton = view.findViewById(R.id.speakerBtn)
         }
 
         override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): ViewHolder {
@@ -582,8 +583,17 @@ class MyPostsActivity : AppCompatActivity() {
                 }
             }
 
-            // Item click listener
-            holder.itemView.setOnClickListener {
+            // Speaker button click - Launch TTS Activity
+            holder.speakerBtn.setOnClickListener {
+                val context = holder.itemView.context
+                val intent = android.content.Intent(context, TTSMatchingPostsActivity::class.java)
+                intent.putExtra(TTSMatchingPostsActivity.EXTRA_LOST_ITEM_ID, lostItem.lost_item_id)
+                intent.putExtra(TTSMatchingPostsActivity.EXTRA_LOST_ITEM_NAME, lostItem.item_name)
+                context.startActivity(intent)
+            }
+
+            // Matching posts button click - Show dialog (original functionality)
+            holder.matchingPostsBtn.setOnClickListener {
                 onItemClick(lostItem)
             }
         }

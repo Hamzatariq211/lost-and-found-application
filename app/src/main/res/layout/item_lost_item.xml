@@ -77,6 +77,17 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
+            <!-- TTS Speaker Button -->
+            <ImageButton
+                android:id="@+id/speakerBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:src="@android:drawable/ic_lock_silent_mode_off"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/button_purple"
+                android:contentDescription="Speak matches" />
+
             <!-- View Matching Posts Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/matchingPostsBtn"
@@ -93,4 +104,3 @@
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
-

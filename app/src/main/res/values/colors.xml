@@ -13,4 +13,6 @@
     <color name="search_hint_color">#A89BAA</color>
     <color name="bottom_nav_background">#1A1A1A</color>
     <color name="dark_card_purple">#3D2061</color>
+    <color name="background_purple">#2E1A47</color>
+    <color name="dark_purple">#1F0E33</color>
     </resources>
